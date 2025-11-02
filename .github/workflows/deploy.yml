@@ -1,0 +1,60 @@
+# ============================================
+# GITHUB ACTIONS - CI/CD DEPLOYMENT
+# ============================================
+# This file automates deployment to Render/Vercel
+# TO CUSTOMIZE: Update build commands and environment variables
+# 
+# HOW IT WORKS:
+# 1. When you push code to GitHub, this runs automatically
+# 2. Builds your frontend
+# 3. Deploys to your hosting service
+# ============================================
+
+name: Deploy to Production
+
+# Trigger: Run on push to main branch
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  # Job: Build and deploy frontend
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Step 1: Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      # Step 2: Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: |
+          cd frontend
+          npm install
+      
+      # Step 4: Build frontend
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm run build
+      
+      # Step 5: Deploy to Vercel (if using Vercel)
+      # Uncomment and configure if using Vercel:
+      # - name: Deploy to Vercel
+      #   uses: amondnet/vercel-action@v25
+      #   with:
+      #     vercel-token: ${{ secrets.VERCEL_TOKEN }}
+      #     vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+      #     vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+      #     vercel-args: '--prod'
+      
+      # OR Deploy to Render (configure in Render dashboard, this just shows structure)
+
